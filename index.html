@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FC App - Sign Up / Login</title>
+<script type="module" src="firebase.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+  form { display: flex; flex-direction: column; width: 300px; gap: 10px; }
+  input { padding: 8px; font-size: 16px; }
+  button { padding: 10px; font-size: 16px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<form id="signup-form">
+  <h2>Create Account / Login</h2>
+  <input type="text" id="username" placeholder="Username" required>
+  <input type="password" id="password" placeholder="Password" required>
+  <button type="submit">Sign Up</button>
+  <p id="status"></p>
+</form>
+
+<script type="module">
+import { database, ref, set } from './firebase.js';
+
+// Redirect if already logged in
+if (localStorage.getItem('fcapp_user')) {
+  window.location.href = 'waitlist.html';
+}
+
+const form = document.getElementById('signup-form');
+const status = document.getElementById('status');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+
+  if (!username || !password) return;
+
+  // Save account in Firebase
+  set(ref(database, 'users/' + username), {
+    username,
+    password
+  })
+  .then(() => {
+    // Save session locally
+    localStorage.setItem('fcapp_user', username);
+
+    // Redirect to waitlist page
+    window.location.href = 'waitlist.html';
+  })
+  .catch((error) => {
+    status.textContent = "Error: " + error.message;
+    status.style.color = "red";
+  });
+});
+</script>
+
+</body>
+</html>

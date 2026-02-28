@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FC App - Waitlist</title>
+<style>
+  body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; text-align: center; }
+  h1 { color: #333; }
+</style>
+</head>
+<body>
+
+<h1>🎉 You’ve been added to the FC App waitlist!</h1>
+<p>Thank you for joining. We’ll notify you when you get access.</p>
+<button id="logout">Logout</button>
+
+<script>
+const logoutBtn = document.getElementById('logout');
+
+logoutBtn.addEventListener('click', () => {
+  localStorage.removeItem('fcapp_user');
+  window.location.href = 'index.html';
+});
+
+// Optional: redirect back to index if no user stored
+if (!localStorage.getItem('fcapp_user')) {
+  window.location.href = 'index.html';
+}
+</script>
+
+</body>
+</html>
