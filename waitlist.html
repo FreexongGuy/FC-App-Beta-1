@@ -5,8 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FC App - Waitlist</title>
 <style>
-  body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; text-align: center; }
+  body { 
+    font-family: Arial, sans-serif; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    flex-direction: column; 
+    text-align: center; 
+  }
   h1 { color: #333; }
+  button { padding: 10px 20px; font-size: 16px; cursor: pointer; margin-top: 20px; }
 </style>
 </head>
 <body>
@@ -16,17 +25,19 @@
 <button id="logout">Logout</button>
 
 <script>
-const logoutBtn = document.getElementById('logout');
+// Check if user is logged in
+const loggedInUser = localStorage.getItem('fcapp_user');
+if (!loggedInUser) {
+  // No account found, redirect to login page
+  window.location.href = 'index.html';
+}
 
+// Logout button
+const logoutBtn = document.getElementById('logout');
 logoutBtn.addEventListener('click', () => {
   localStorage.removeItem('fcapp_user');
   window.location.href = 'index.html';
 });
-
-// Optional: redirect back to index if no user stored
-if (!localStorage.getItem('fcapp_user')) {
-  window.location.href = 'index.html';
-}
 </script>
 
 </body>
