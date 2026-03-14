@@ -2,7 +2,7 @@ So far, We are working on visualization (structure), leaving the functionality f
 
 ✅ Login
 ✅ Styling
-🔧 Chat
+✅ Chat
 🔧 Calling
 🔧 Announcements
 🔧 Developer Utility
