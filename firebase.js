@@ -1,6 +1,16 @@
 // firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import {
+  getDatabase,
+  ref,
+  set,
+  get,
+  push,
+  onChildAdded,
+  query,
+  limitToLast,
+  serverTimestamp,
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -18,4 +28,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-export { database, ref, set };
+export {
+  database,
+  ref,
+  set,
+  get,
+  push,
+  onChildAdded,
+  query,
+  limitToLast,
+  serverTimestamp,
+};
