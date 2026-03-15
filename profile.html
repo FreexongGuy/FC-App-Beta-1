@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FC App - Profile</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 id="profile-title" class="topbar__title">Profile</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <span class="topbar__label" aria-current="page">Profile</span>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="auth">
+    <div class="card">
+      <div class="card__inner">
+        <form id="profile-form">
+          <h2>Profile picture</h2>
+
+          <div class="profile-preview" aria-label="Profile picture preview">
+            <div id="avatarPreview" class="profile-avatar">
+              <span id="avatarFallback" class="avatar__fallback">?</span>
+            </div>
+            <p class="profile-hint">Upload an image to use as your avatar in chat.</p>
+          </div>
+
+          <label for="avatarFile">Choose image</label>
+          <input id="avatarFile" type="file" accept="image/*">
+
+          <div id="uploadUi" class="upload-ui" hidden>
+            <div class="upload-ui__row">
+              <div id="uploadLabel" class="upload-ui__label">Preparing...</div>
+              <div id="uploadPct" class="upload-ui__pct"></div>
+            </div>
+            <progress id="uploadProgress" class="upload-ui__bar" max="100"></progress>
+          </div>
+
+          <button id="saveBtn" type="submit">Save</button>
+          <p id="status"></p>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="profile.js"></script>
+</body>
+</html>

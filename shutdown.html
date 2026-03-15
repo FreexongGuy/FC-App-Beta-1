@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FC App - Chat Shutdown</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Chat</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="auth">
+    <div class="card">
+      <div class="card__inner">
+        <h2>Chat is shutdown</h2>
+        <p>The chat is currently unavailable. This page will automatically return you to chat when it reopens.</p>
+        <p id="status"></p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="shutdown.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FC App - Announcements</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Announcements</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet is-active" href="announcements.html" aria-current="page">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="ann">
+    <section class="card ann__card" aria-label="Announcements list">
+      <div class="card__inner">
+        <p class="ann__hint">Everyone can see announcements.</p>
+        <ol id="ann-list" class="ann__list" aria-live="polite"></ol>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="announcements.js"></script>
+</body>
+</html>
+
