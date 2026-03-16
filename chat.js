@@ -405,9 +405,16 @@ onChildRemoved(messagesRef, (snap) => {
 onChildChanged(messagesRef, (snap) => {
   const id = snap.key;
   if (!id) return;
+  const value = snap.val() || {};
   const node =
     messageNodeById.get(id) || messagesEl.querySelector(`.msg-row[data-id="${CSS.escape(id)}"]`);
   if (!node) return;
+
+  const body = node.querySelector(".msg__body");
+  if (body) body.textContent = value.text || "";
+
+  const time = node.querySelector(".msg__time");
+  if (time) time.textContent = formatTime(value.ts);
 });
 
 // Every 0.5s, check if any messages need removal and if chat is shutdown.

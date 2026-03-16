@@ -74,7 +74,7 @@ function formatTime(ts) {
   });
 }
 
-function renderAdminRow({ id, title, subtitle, body, onDelete }) {
+function renderAdminRow({ id, title, subtitle, body, onDelete, onEdit }) {
   const li = document.createElement("li");
   li.className = "admin-row";
   li.dataset.id = id;
@@ -99,6 +99,15 @@ function renderAdminRow({ id, title, subtitle, body, onDelete }) {
   const actions = document.createElement("div");
   actions.className = "admin-row__actions";
 
+  if (typeof onEdit === "function") {
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "btn-quiet";
+    edit.textContent = "Edit";
+    edit.addEventListener("click", onEdit);
+    actions.appendChild(edit);
+  }
+
   const del = document.createElement("button");
   del.type = "button";
   del.className = "btn-quiet btn-quiet--danger";
@@ -116,6 +125,16 @@ function renderAdminRow({ id, title, subtitle, body, onDelete }) {
   li.appendChild(meta);
   li.appendChild(b);
   return li;
+}
+
+function updateAdminRow(node, { title, subtitle, body }) {
+  if (!node) return;
+  const titleEl = node.querySelector(".admin-row__title");
+  const subtitleEl = node.querySelector(".admin-row__subtitle");
+  const bodyEl = node.querySelector(".admin-row__body");
+  if (titleEl && title != null) titleEl.textContent = title;
+  if (subtitleEl && subtitle != null) subtitleEl.textContent = subtitle;
+  if (bodyEl && body != null) bodyEl.textContent = body;
 }
 
 // --- Chat shutdown controls
@@ -395,6 +414,28 @@ onChildAdded(messagesQuery, (snap) => {
     title: value.username || "unknown",
     subtitle: formatTime(value.ts),
     body: value.text || "",
+    onEdit: async () => {
+      const currentText =
+        messagesEl
+          .querySelector(`.admin-row[data-id="${CSS.escape(id)}"]`)
+          ?.querySelector(".admin-row__body")?.textContent || "";
+      const next = prompt("Edit message text:", currentText);
+      if (next === null) return;
+      const trimmed = String(next).trim().slice(0, 500);
+      if (!trimmed) {
+        alert("Message cannot be empty.");
+        return;
+      }
+      try {
+        await update(ref(database, `messages/${id}`), {
+          text: trimmed,
+          editedAt: serverTimestamp(),
+          editedBy: user,
+        });
+      } catch (err) {
+        alert(err?.message || String(err));
+      }
+    },
     onDelete: async () => {
       if (shouldConfirmMessageDelete() && !confirm("Remove this message?")) return;
       try {
@@ -413,6 +454,20 @@ onChildRemoved(messagesRef, (snap) => {
   if (!id) return;
   const node = messagesEl.querySelector(`.admin-row[data-id="${CSS.escape(id)}"]`);
   node?.remove();
+});
+
+onChildChanged(messagesRef, (snap) => {
+  const id = snap.key;
+  if (!id) return;
+  const value = snap.val() || {};
+  const node = messagesEl.querySelector(`.admin-row[data-id="${CSS.escape(id)}"]`);
+  if (!node) return;
+  const edited = value.editedAt ? " • edited" : "";
+  updateAdminRow(node, {
+    title: value.username || "unknown",
+    subtitle: `${formatTime(value.ts)}${edited}`,
+    body: value.text || "",
+  });
 });
 
 // --- Announcements admin
