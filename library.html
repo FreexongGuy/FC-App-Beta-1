@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Drawing Library</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Drawing Library</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="draw.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <span class="topbar__label">Profile</span>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="hub">
+    <section class="card hub__card" aria-label="Saved drawings">
+      <div class="card__inner">
+        <h2>Your drawings</h2>
+        <p class="hub__hint">You can only view and rename drawings here.</p>
+
+        <div id="libEmpty" class="game__meta" hidden>No drawings yet. Go back and press Save.</div>
+        <div id="libGrid" class="library-grid" aria-label="Drawings grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="libModal" class="modal" hidden aria-hidden="true" role="dialog" aria-label="Drawing viewer">
+    <div class="modal__backdrop" data-close="1"></div>
+    <div class="modal__panel" role="document">
+      <div class="modal__header">
+        <div id="libModalTitle" class="modal__title">View</div>
+        <button class="btn-quiet btn-quiet--sm" type="button" data-close="1">Close</button>
+      </div>
+      <div class="modal__body">
+        <img id="libModalImg" class="modal__img" alt="Saved drawing" />
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="library.js"></script>
+</body>
+</html>

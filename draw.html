@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Drawing</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Drawing</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="gamesingle.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <span class="topbar__label">Profile</span>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="game">
+    <section class="game__panel" aria-label="Drawing canvas">
+      <div class="game__inner">
+        <div class="game__hud">
+          <div>
+            <div class="game__title">Draw</div>
+            <div id="drawStatus" class="game__meta">Tip: Use mouse/touch. Undo/Redo works per stroke.</div>
+          </div>
+          <div class="game__controls">
+            <a class="btn-quiet btn-quiet--sm" href="library.html">Library</a>
+            <button id="drawSave" class="btn-quiet btn-quiet--sm" type="button">Save</button>
+          </div>
+        </div>
+
+        <div class="toolbar" role="group" aria-label="Drawing controls">
+          <div class="toolbar__group">
+            <label class="field">
+              <span class="field__label">Tool</span>
+              <select id="drawTool" class="field__control">
+                <option value="pen" selected>Pen</option>
+                <option value="marker">Marker</option>
+                <option value="eraser">Eraser</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field__label">Color</span>
+              <input id="drawColor" class="field__control field__color" type="color" value="#3be6c1" />
+            </label>
+            <label class="field">
+              <span class="field__label">Thickness</span>
+              <input id="drawSize" class="field__control" type="range" min="1" max="48" value="10" />
+            </label>
+            <label class="field">
+              <span class="field__label">Opacity</span>
+              <input id="drawOpacity" class="field__control" type="range" min="0.1" max="1" step="0.05" value="1" />
+            </label>
+            <label class="field">
+              <span class="field__label">Background</span>
+              <input id="drawBg" class="field__control field__color" type="color" value="#07111f" />
+            </label>
+          </div>
+
+          <div class="toolbar__group">
+            <button id="drawUndo" class="btn-quiet btn-quiet--sm" type="button">Undo</button>
+            <button id="drawRedo" class="btn-quiet btn-quiet--sm" type="button">Redo</button>
+            <button id="drawClear" class="btn-quiet btn-quiet--sm btn-quiet--danger" type="button">Clear</button>
+          </div>
+        </div>
+
+        <canvas id="drawCanvas" class="game-canvas" width="940" height="560" aria-label="Drawing canvas"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="draw.js"></script>
+</body>
+</html>

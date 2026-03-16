@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Snake</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Snake</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="gamesingle.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <span class="topbar__label">Profile</span>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="game">
+    <section class="game__panel" aria-label="Snake">
+      <div class="game__inner">
+        <div class="game__hud">
+          <div>
+            <div class="game__title">Snake</div>
+            <div id="snakeMeta" class="game__meta">
+              Controls: <span class="kbd">↑</span><span class="kbd">↓</span><span class="kbd">←</span><span class="kbd">→</span>
+            </div>
+          </div>
+          <div class="game__controls">
+            <span id="snakeScore" class="game__meta">Score: 0</span>
+            <button id="snakeRestart" class="btn-quiet btn-quiet--sm" type="button">Restart</button>
+          </div>
+        </div>
+
+        <canvas id="snakeCanvas" class="game-canvas" width="840" height="520" aria-label="Snake game canvas"></canvas>
+        <div id="snakeStatus" class="game__meta"></div>
+
+        <div class="dpad" role="group" aria-label="On-screen controls">
+          <button id="snakeUp" class="btn-quiet dpad__btn" type="button" aria-label="Up">↑</button>
+          <div class="dpad__row">
+            <button id="snakeLeft" class="btn-quiet dpad__btn" type="button" aria-label="Left">←</button>
+            <button id="snakeDown" class="btn-quiet dpad__btn" type="button" aria-label="Down">↓</button>
+            <button id="snakeRight" class="btn-quiet dpad__btn" type="button" aria-label="Right">→</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="snake.js"></script>
+</body>
+</html>

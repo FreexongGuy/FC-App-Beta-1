@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Minigames</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Minigames</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet is-active" href="minigames.html" aria-current="page">Minigames</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <span class="topbar__label">Profile</span>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="hub">
+    <section class="card hub__card" aria-label="Minigames modes">
+      <div class="card__inner">
+        <h2>Choose a mode</h2>
+        <p class="hub__hint">Multiplayer is coming soon.</p>
+
+        <div class="hub__grid">
+          <a class="hub-tile" href="gamesingle.html">
+            <div class="hub-tile__title">Singleplayer</div>
+            <div class="hub-tile__desc">Play quick arcade games.</div>
+          </a>
+
+          <button class="hub-tile hub-tile--disabled" type="button" disabled aria-disabled="true">
+            <div class="hub-tile__title">Multiplayer</div>
+            <div class="hub-tile__desc">Disabled for now.</div>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="minigames.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Singleplayer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Singleplayer</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="minigames.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <span class="topbar__label">Profile</span>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="hub">
+    <section class="card hub__card" aria-label="Singleplayer games">
+      <div class="card__inner">
+        <h2>Pick a game</h2>
+        <p class="hub__hint">Tip: Most games use your keyboard. Click inside the game first.</p>
+
+        <div class="hub__grid">
+          <a class="hub-tile" href="tictactoe.html">
+            <div class="hub-tile__title">Tic Tac Toe</div>
+            <div class="hub-tile__desc">Classic 3×3.</div>
+          </a>
+
+          <a class="hub-tile" href="pingpong.html">
+            <div class="hub-tile__title">Ping Pong (vs bot)</div>
+            <div class="hub-tile__desc">First to 7 wins.</div>
+          </a>
+
+          <a class="hub-tile" href="snake.html">
+            <div class="hub-tile__title">Snake</div>
+            <div class="hub-tile__desc">Eat, grow, don’t crash.</div>
+          </a>
+
+          <a class="hub-tile" href="melonsandbox.html">
+            <div class="hub-tile__title">Physics Sandbox</div>
+            <div class="hub-tile__desc">Play with physics and NPCs (Melon-like).</div>
+          </a>
+
+          <a class="hub-tile" href="draw.html">
+            <div class="hub-tile__title">Drawing</div>
+            <div class="hub-tile__desc">Draw, save, and manage your library.</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="gamesingle.js"></script>
+</body>
+</html>

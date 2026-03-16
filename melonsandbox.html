@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Physics Sandbox</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Physics Sandbox</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="gamesingle.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <span class="topbar__label">Profile</span>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="game">
+    <section class="game__panel" aria-label="Physics sandbox">
+      <div class="game__inner">
+        <div class="game__hud">
+          <div>
+            <div class="game__title">Melon-like sandbox</div>
+            <div id="msMeta" class="game__meta">Tool: Drag</div>
+          </div>
+          <div class="game__controls">
+            <button class="btn-quiet btn-quiet--sm" id="toolDrag" type="button">Drag</button>
+            <button class="btn-quiet btn-quiet--sm" id="toolBall" type="button">Ball</button>
+            <button class="btn-quiet btn-quiet--sm" id="toolBox" type="button">Box</button>
+            <button class="btn-quiet btn-quiet--sm" id="toolNpc" type="button">NPC</button>
+            <button class="btn-quiet btn-quiet--sm" id="toolPlatform" type="button">Platform</button>
+            <button class="btn-quiet btn-quiet--sm" id="toolExplode" type="button">Explode</button>
+            <button class="btn-quiet btn-quiet--sm" id="toolGravity" type="button">Gravity: On</button>
+            <button class="btn-quiet btn-quiet--sm btn-quiet--danger" id="toolClear" type="button">Clear</button>
+          </div>
+        </div>
+
+        <canvas id="msCanvas" class="game-canvas" width="940" height="580" aria-label="Physics canvas"></canvas>
+        <div class="game__meta">
+          Tips: Left-click to use the selected tool. Drag objects when in Drag mode. Right-click deletes an object.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="melonsandbox.js"></script>
+</body>
+</html>
+
