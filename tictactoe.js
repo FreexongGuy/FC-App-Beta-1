@@ -13,9 +13,12 @@ const statusEl = document.getElementById("tttStatus");
 const resetEl = document.getElementById("tttReset");
 const ctx = canvas.getContext("2d");
 
+const HUMAN = "X";
+const BOT = "O";
+
 const state = {
   board: Array(9).fill(null),
-  turn: "X",
+  turn: HUMAN,
   winner: null,
   over: false,
 };
@@ -45,14 +48,17 @@ function computeWinner(board) {
 
 function setStatus() {
   if (!state.over) {
-    statusEl.textContent = `${state.turn}’s turn.`;
+    statusEl.textContent = state.turn === HUMAN ? "Your turn." : "Bot thinking…";
     return;
   }
   if (state.winner === "draw") {
     statusEl.textContent = "Draw. Press Reset to play again.";
     return;
   }
-  statusEl.textContent = `${state.winner} wins! Press Reset to play again.`;
+  statusEl.textContent =
+    state.winner === HUMAN
+      ? "You win! Press Reset to play again."
+      : "Bot wins. Press Reset to play again.";
 }
 
 function draw() {
@@ -109,15 +115,69 @@ function draw() {
 
 function reset() {
   state.board.fill(null);
-  state.turn = "X";
+  state.turn = HUMAN;
   state.winner = null;
   state.over = false;
   setStatus();
   draw();
 }
 
+function emptyCells(board) {
+  const out = [];
+  for (let i = 0; i < board.length; i++) if (!board[i]) out.push(i);
+  return out;
+}
+
+function minimax(board, isBotTurn, depth) {
+  const winner = computeWinner(board);
+  if (winner) {
+    if (winner === BOT) return { score: 10 - depth };
+    if (winner === HUMAN) return { score: depth - 10 };
+    return { score: 0 };
+  }
+
+  const empties = emptyCells(board);
+  if (isBotTurn) {
+    let best = { score: -Infinity, idx: empties[0] };
+    for (const idx of empties) {
+      board[idx] = BOT;
+      const res = minimax(board, false, depth + 1);
+      board[idx] = null;
+      if (res.score > best.score) best = { score: res.score, idx };
+    }
+    return best;
+  }
+
+  let best = { score: Infinity, idx: empties[0] };
+  for (const idx of empties) {
+    board[idx] = HUMAN;
+    const res = minimax(board, true, depth + 1);
+    board[idx] = null;
+    if (res.score < best.score) best = { score: res.score, idx };
+  }
+  return best;
+}
+
+function botMove() {
+  if (state.over || state.turn !== BOT) return;
+  const { idx } = minimax([...state.board], true, 0);
+  if (idx == null || state.board[idx]) return;
+
+  state.board[idx] = BOT;
+  const winner = computeWinner(state.board);
+  if (winner) {
+    state.over = true;
+    state.winner = winner;
+  } else {
+    state.turn = HUMAN;
+  }
+  setStatus();
+  draw();
+}
+
 function handleClick(ev) {
   if (state.over) return;
+  if (state.turn !== HUMAN) return;
   const rect = canvas.getBoundingClientRect();
   const px = (ev.clientX - rect.left) * (canvas.width / rect.width);
   const py = (ev.clientY - rect.top) * (canvas.height / rect.height);
@@ -127,21 +187,24 @@ function handleClick(ev) {
   const idx = row * 3 + col;
   if (state.board[idx]) return;
 
-  state.board[idx] = state.turn;
+  state.board[idx] = HUMAN;
   const winner = computeWinner(state.board);
   if (winner) {
     state.over = true;
     state.winner = winner;
   } else {
-    state.turn = state.turn === "X" ? "O" : "X";
+    state.turn = BOT;
   }
 
   setStatus();
   draw();
+
+  if (!state.over) {
+    window.setTimeout(botMove, 220);
+  }
 }
 
 canvas.addEventListener("pointerdown", handleClick);
 resetEl.addEventListener("click", reset);
 
 reset();
-
