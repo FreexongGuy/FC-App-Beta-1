@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Tetris</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Tetris</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="gamesingle.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <span class="topbar__label">Profile</span>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="game">
+    <section class="game__panel" aria-label="Tetris">
+      <div class="game__inner">
+        <div class="game__hud">
+          <div>
+            <div class="game__title">Tetris</div>
+            <div class="game__meta">
+              Move: <span class="kbd">←</span><span class="kbd">→</span> • Rotate: <span class="kbd">↑</span> • Soft drop: <span class="kbd">↓</span> • Hard drop: <span class="kbd">Space</span> • Hold: <span class="kbd">C</span> • Pause: <span class="kbd">P</span>
+            </div>
+          </div>
+          <div class="game__controls">
+            <span id="tetrisScore" class="game__meta">Score: 0</span>
+            <span id="tetrisLines" class="game__meta">Lines: 0</span>
+            <span id="tetrisLevel" class="game__meta">Level: 1</span>
+            <button id="tetrisPause" class="btn-quiet btn-quiet--sm" type="button">Pause</button>
+            <button id="tetrisRestart" class="btn-quiet btn-quiet--sm" type="button">Restart</button>
+          </div>
+        </div>
+
+        <canvas id="tetrisCanvas" class="game-canvas" width="940" height="520" aria-label="Tetris game canvas"></canvas>
+        <div id="tetrisStatus" class="game__meta"></div>
+
+        <div class="dpad" role="group" aria-label="On-screen controls">
+          <button id="tetrisRotate" class="btn-quiet dpad__btn" type="button" aria-label="Rotate">⟳</button>
+          <div class="dpad__row">
+            <button id="tetrisLeft" class="btn-quiet dpad__btn" type="button" aria-label="Left">←</button>
+            <button id="tetrisDown" class="btn-quiet dpad__btn" type="button" aria-label="Down">↓</button>
+            <button id="tetrisRight" class="btn-quiet dpad__btn" type="button" aria-label="Right">→</button>
+          </div>
+          <div class="dpad__row">
+            <button id="tetrisHold" class="btn-quiet dpad__btn" type="button" aria-label="Hold">C</button>
+            <button id="tetrisDrop" class="btn-quiet dpad__btn" type="button" aria-label="Hard drop">⤓</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="tetris.js"></script>
+</body>
+</html>
+
