@@ -17,6 +17,7 @@
       <a class="btn-quiet" href="minigames.html">Minigames</a>
       <a class="btn-quiet" href="announcements.html">Announcements</a>
       <span class="topbar__label">Developer Panel</span>
+      <a class="btn-quiet" href="profile.html">Profile</a>
       <a class="icon-btn topbar__icon" href="utilssettings.html" aria-label="Settings">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path fill="currentColor" d="M19.4 13a7.9 7.9 0 0 0 .1-1 7.9 7.9 0 0 0-.1-1l2-1.6a.9.9 0 0 0 .2-1.1l-1.9-3.3a.9.9 0 0 0-1-.4l-2.3.9a7.8 7.8 0 0 0-1.7-1l-.3-2.4a.9.9 0 0 0-.9-.8H9.3a.9.9 0 0 0-.9.8l-.3 2.4a7.8 7.8 0 0 0-1.7 1l-2.3-.9a.9.9 0 0 0-1 .4L1.2 7.2a.9.9 0 0 0 .2 1.1l2 1.6a7.9 7.9 0 0 0-.1 1 7.9 7.9 0 0 0 .1 1l-2 1.6a.9.9 0 0 0-.2 1.1l1.9 3.3c.2.4.6.5 1 .4l2.3-.9c.5.4 1.1.7 1.7 1l.3 2.4c.1.5.4.8.9.8h3.4c.5 0 .8-.3.9-.8l.3-2.4c.6-.3 1.2-.6 1.7-1l2.3.9c.4.1.8 0 1-.4l1.9-3.3a.9.9 0 0 0-.2-1.1L19.4 13ZM11 15.5A3.5 3.5 0 1 1 11 8.5a3.5 3.5 0 0 1 0 7Z"/>
@@ -61,6 +62,23 @@
         </form>
 
         <ol id="announce-list" class="admin__list" aria-live="polite"></ol>
+      </div>
+    </section>
+
+    <section class="card admin__card" aria-label="Chat events">
+      <div class="card__inner">
+        <h2>Chat event</h2>
+        <p class="admin__hint">Set a banner at the top of chat for everyone.</p>
+
+        <form id="event-form" class="admin__form" autocomplete="off">
+          <input id="event-title" type="text" placeholder="Event title" maxlength="60" required>
+          <input id="event-desc" type="text" placeholder="Event description (optional)" maxlength="180">
+          <div class="admin-actions">
+            <button id="event-start" type="submit">Start / Update event</button>
+            <button id="event-end" class="btn-quiet btn-quiet--danger" type="button">End event</button>
+            <span id="event-status" class="admin-actions__status"></span>
+          </div>
+        </form>
       </div>
     </section>
 

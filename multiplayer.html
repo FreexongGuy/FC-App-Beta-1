@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Multiplayer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Multiplayer</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="minigames.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="contacts.html">Contacts</a>
+      <a class="btn-quiet" href="call.html">Call</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <a class="btn-quiet" href="profile.html">Profile</a>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="hub">
+    <section class="card hub__card" aria-label="Multiplayer games">
+      <div class="card__inner">
+        <h2>Pick a multiplayer game</h2>
+        <p class="hub__hint">More multiplayer games can be added next (Among Us-style needs a lot more work).</p>
+
+        <div class="hub__grid">
+          <a class="hub-tile" href="tictactoe-mp.html">
+            <div class="hub-tile__title">Tic Tac Toe (Online)</div>
+            <div class="hub-tile__desc">Create or join a room code.</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    const user = (localStorage.getItem("fcapp_user") || "").trim();
+    if (!user) window.location.href = "index.html";
+    document.getElementById("signout")?.addEventListener("click", () => {
+      localStorage.removeItem("fcapp_user");
+      localStorage.removeItem("fcapp_dev");
+      localStorage.removeItem("fcapp_dev_at");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
+

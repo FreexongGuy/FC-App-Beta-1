@@ -11,6 +11,7 @@ import {
   onChildAdded,
   onChildChanged,
   onChildRemoved,
+  onValue,
   serverTimestamp,
 } from "./firebase.js";
 
@@ -38,6 +39,13 @@ const announceTextEl = document.getElementById("announce-text");
 const announceSendEl = document.getElementById("announce-send");
 const announceStatusEl = document.getElementById("announce-status");
 const announceListEl = document.getElementById("announce-list");
+
+const eventFormEl = document.getElementById("event-form");
+const eventTitleEl = document.getElementById("event-title");
+const eventDescEl = document.getElementById("event-desc");
+const eventStartEl = document.getElementById("event-start");
+const eventEndEl = document.getElementById("event-end");
+const eventStatusEl = document.getElementById("event-status");
 
 titleEl.textContent = `Developer Utils • ${user}`;
 
@@ -135,6 +143,87 @@ function updateAdminRow(node, { title, subtitle, body }) {
   if (titleEl && title != null) titleEl.textContent = title;
   if (subtitleEl && subtitle != null) subtitleEl.textContent = subtitle;
   if (bodyEl && body != null) bodyEl.textContent = body;
+}
+
+// --- Chat event banner
+const eventRef = ref(database, "events/current");
+
+function setEventStatus(message, kind) {
+  if (!eventStatusEl) return;
+  eventStatusEl.textContent = message || "";
+  eventStatusEl.className = "admin-actions__status";
+  if (kind === "ok") eventStatusEl.classList.add("status--ok");
+  if (kind === "error") eventStatusEl.classList.add("status--error");
+}
+
+if (eventFormEl && eventTitleEl && eventDescEl && eventStartEl && eventEndEl) {
+  onValue(
+    eventRef,
+    (snap) => {
+      if (!snap.exists()) {
+        setEventStatus("No active event", "ok");
+        eventEndEl.disabled = true;
+        return;
+      }
+      const v = snap.val() || {};
+      const title = typeof v.title === "string" ? v.title : "";
+      setEventStatus(title ? `Active: ${title}` : "Active", "ok");
+      eventEndEl.disabled = false;
+
+      // Don't stomp on user edits while typing: only prefill if empty.
+      if (!eventTitleEl.value.trim() && title) eventTitleEl.value = title;
+      const desc = typeof v.description === "string" ? v.description : "";
+      if (!eventDescEl.value.trim() && desc) eventDescEl.value = desc;
+    },
+    (err) => {
+      setEventStatus(err?.message || String(err), "error");
+    }
+  );
+
+  eventFormEl.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const title = String(eventTitleEl.value || "").trim().slice(0, 60);
+    const description = String(eventDescEl.value || "").trim().slice(0, 180);
+    if (!title) {
+      setEventStatus("Title is required.", "error");
+      return;
+    }
+
+    eventStartEl.disabled = true;
+    eventEndEl.disabled = true;
+    try {
+      await set(eventRef, {
+        title,
+        description,
+        by: user,
+        startedAt: new Date().toISOString(),
+        startedAtMs: Date.now(),
+        updatedAt: serverTimestamp(),
+      });
+      setEventStatus("Event updated.", "ok");
+    } catch (err) {
+      setEventStatus(err?.message || String(err), "error");
+    } finally {
+      eventStartEl.disabled = false;
+      // onValue will re-enable End if event exists
+    }
+  });
+
+  eventEndEl.addEventListener("click", async () => {
+    if (!confirm("End the current event for everyone?")) return;
+    eventStartEl.disabled = true;
+    eventEndEl.disabled = true;
+    try {
+      await remove(eventRef);
+      setEventStatus("Event ended.", "ok");
+      eventTitleEl.value = "";
+      eventDescEl.value = "";
+    } catch (err) {
+      setEventStatus(err?.message || String(err), "error");
+    } finally {
+      eventStartEl.disabled = false;
+    }
+  });
 }
 
 // --- Chat shutdown controls

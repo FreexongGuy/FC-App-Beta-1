@@ -16,7 +16,7 @@
   <div class="topbar__right">
     <a class="btn-quiet" href="chat.html">Chat</a>
     <a class="btn-quiet" href="minigames.html">Minigames</a>
-    <span class="topbar__label">Profile</span>
+    <a class="btn-quiet" href="profile.html">Profile</a>
     <a class="btn-quiet" href="announcements.html">Announcements</a>
     <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
   </div>
@@ -39,24 +39,63 @@
 <script type="module">
 import { database, ref, set, get } from './firebase.js';
 
+const form = document.getElementById('signup-form');
+const status = document.getElementById('status');
+const btn = form?.querySelector('button[type="submit"]');
+
+function setStatus(msg, kind) {
+  status.textContent = msg || "";
+  status.style.color = kind === "error" ? "red" : "";
+}
+
+function safeGetItem(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch (e) {
+    console.warn("localStorage blocked:", e);
+    return null;
+  }
+}
+
+function safeSetItem(key, value) {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch (e) {
+    console.warn("localStorage blocked:", e);
+    return false;
+  }
+}
+
+window.addEventListener("error", (e) => {
+  setStatus("Error: " + (e?.message || "Unknown error"), "error");
+});
+window.addEventListener("unhandledrejection", (e) => {
+  const reason = e?.reason;
+  setStatus("Error: " + (reason?.message || String(reason || "Unknown error")), "error");
+});
+
 // Redirect if already logged in
-if (localStorage.getItem('fcapp_user')) {
+if (safeGetItem('fcapp_user')) {
   window.location.href = 'chat.html';
 }
 
-const form = document.getElementById('signup-form');
-const status = document.getElementById('status');
-
-form.addEventListener('submit', async (e) => {
+form?.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-const username = document.getElementById('username').value.trim();
-const password = document.getElementById('password').value;
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
 
   if (!username || !password) return;
 
-  status.textContent = "";
-  status.style.color = "";
+  // Firebase RTDB keys disallow: . # $ [ ] /
+  if (username.length > 32 || /[.#$\[\]\/]/.test(username)) {
+    setStatus("Username must be 1-32 chars and cannot contain . # $ [ ] /", "error");
+    return;
+  }
+
+  setStatus("Working…", null);
+  if (btn) btn.disabled = true;
 
   try {
     const userRef = ref(database, 'users/' + username);
@@ -65,23 +104,29 @@ const password = document.getElementById('password').value;
     if (snap.exists()) {
       const existing = snap.val() || {};
       if (existing.password !== password) {
-        status.textContent = "Incorrect password for that username.";
-        status.style.color = "red";
+        setStatus("Incorrect password for that username.", "error");
         return;
       }
 
-      localStorage.setItem('fcapp_user', username);
+      if (!safeSetItem('fcapp_user', username)) {
+        setStatus("Login failed: browser storage is blocked (enable cookies/site data).", "error");
+        return;
+      }
       window.location.href = 'chat.html';
       return;
     }
 
     // Create new account in Firebase
     await set(userRef, { username, password });
-    localStorage.setItem('fcapp_user', username);
+    if (!safeSetItem('fcapp_user', username)) {
+      setStatus("Account created, but browser storage is blocked (enable cookies/site data).", "error");
+      return;
+    }
     window.location.href = 'chat.html';
   } catch (error) {
-    status.textContent = "Error: " + (error?.message || String(error));
-    status.style.color = "red";
+    setStatus("Error: " + (error?.message || String(error)), "error");
+  } finally {
+    if (btn) btn.disabled = false;
   }
 });
 </script>

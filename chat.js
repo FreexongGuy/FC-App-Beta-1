@@ -1,6 +1,5 @@
 import {
   database,
-  storage,
   ref,
   get,
   push,
@@ -9,12 +8,10 @@ import {
   onChildAdded,
   onChildRemoved,
   onChildChanged,
+  onValue,
   query,
   limitToLast,
   serverTimestamp,
-  storageRef,
-  uploadBytesResumable,
-  getDownloadURL,
 } from "./firebase.js";
 
 const user = (localStorage.getItem("fcapp_user") || "").trim();
@@ -28,6 +25,9 @@ const messagesEl = document.getElementById("messages");
 const composerEl = document.getElementById("composer");
 const messageInput = document.getElementById("message");
 const sendBtn = document.getElementById("send");
+const eventBannerEl = document.getElementById("eventBanner");
+const eventTitleEl = document.getElementById("eventTitle");
+const eventDescEl = document.getElementById("eventDesc");
 
 titleEl.textContent = `FC Chat • ${user}`;
 const docTitleBase = `FC Chat • ${user}`;
@@ -39,6 +39,45 @@ function setUnreadCount(next) {
 }
 
 setUnreadCount(0);
+
+// --- Event banner (from Developer Utils)
+function hideEvent() {
+  if (!eventBannerEl) return;
+  eventBannerEl.hidden = true;
+  if (eventTitleEl) eventTitleEl.textContent = "";
+  if (eventDescEl) eventDescEl.textContent = "";
+}
+
+function showEvent({ title, description }) {
+  if (!eventBannerEl) return;
+  const t = String(title || "").trim();
+  const d = String(description || "").trim();
+  if (!t && !d) {
+    hideEvent();
+    return;
+  }
+  eventBannerEl.hidden = false;
+  if (eventTitleEl) eventTitleEl.textContent = t || "Event";
+  if (eventDescEl) eventDescEl.textContent = d || "";
+}
+
+try {
+  const eventRef = ref(database, "events/current");
+  onValue(eventRef, (snap) => {
+    if (!snap.exists()) {
+      hideEvent();
+      return;
+    }
+    const v = snap.val() || {};
+    showEvent({
+      title: v.title,
+      description: v.description,
+    });
+  });
+} catch (err) {
+  console.warn("Failed to subscribe to events:", err);
+  hideEvent();
+}
 
 let shutdownInFlight = false;
 async function checkChatShutdown() {

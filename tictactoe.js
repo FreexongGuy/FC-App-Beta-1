@@ -11,6 +11,7 @@ document.getElementById("signout")?.addEventListener("click", () => {
 const canvas = document.getElementById("tttCanvas");
 const statusEl = document.getElementById("tttStatus");
 const resetEl = document.getElementById("tttReset");
+const difficultyEl = document.getElementById("tttDifficulty");
 const ctx = canvas.getContext("2d");
 
 const HUMAN = "X";
@@ -22,6 +23,22 @@ const state = {
   winner: null,
   over: false,
 };
+
+const DIFF_KEY = "fcapp_ttt_difficulty";
+function getDifficulty() {
+  const d = (difficultyEl?.value || localStorage.getItem(DIFF_KEY) || "medium").trim();
+  return d === "easy" || d === "hard" ? d : "medium";
+}
+
+function setDifficulty(next) {
+  const d = next === "easy" || next === "hard" ? next : "medium";
+  localStorage.setItem(DIFF_KEY, d);
+  if (difficultyEl) difficultyEl.value = d;
+  setStatus();
+}
+
+setDifficulty(localStorage.getItem(DIFF_KEY) || "medium");
+difficultyEl?.addEventListener("change", () => setDifficulty(difficultyEl.value));
 
 function lines() {
   return [
@@ -48,7 +65,10 @@ function computeWinner(board) {
 
 function setStatus() {
   if (!state.over) {
-    statusEl.textContent = state.turn === HUMAN ? "Your turn." : "Bot thinking…";
+    const diff = getDifficulty();
+    const diffLabel = diff[0].toUpperCase() + diff.slice(1);
+    statusEl.textContent =
+      state.turn === HUMAN ? `Your turn. (${diffLabel})` : `Bot thinking… (${diffLabel})`;
     return;
   }
   if (state.winner === "draw") {
@@ -128,6 +148,12 @@ function emptyCells(board) {
   return out;
 }
 
+function pickRandomEmpty(board) {
+  const empties = emptyCells(board);
+  if (empties.length === 0) return null;
+  return empties[Math.floor(Math.random() * empties.length)];
+}
+
 function minimax(board, isBotTurn, depth) {
   const winner = computeWinner(board);
   if (winner) {
@@ -160,7 +186,17 @@ function minimax(board, isBotTurn, depth) {
 
 function botMove() {
   if (state.over || state.turn !== BOT) return;
-  const { idx } = minimax([...state.board], true, 0);
+  const diff = getDifficulty();
+  let idx = null;
+  if (diff === "easy") {
+    idx = pickRandomEmpty(state.board);
+  } else if (diff === "medium") {
+    // Mostly smart, but sometimes makes a mistake.
+    idx = Math.random() < 0.28 ? pickRandomEmpty(state.board) : minimax([...state.board], true, 0).idx;
+  } else {
+    idx = minimax([...state.board], true, 0).idx;
+  }
+
   if (idx == null || state.board[idx]) return;
 
   state.board[idx] = BOT;

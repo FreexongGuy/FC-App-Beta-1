@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FC App - Ping Pong</title>
+  <title>FC App - Community Games</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="page">
 
   <header class="topbar" role="banner">
     <div class="topbar__left">
-      <h1 class="topbar__title">Ping Pong</h1>
+      <h1 class="topbar__title">Community Games</h1>
     </div>
     <div class="topbar__right">
-      <a class="btn-quiet" href="gamesingle.html">Back</a>
+      <a class="btn-quiet" href="minigames.html">Back</a>
       <a class="btn-quiet" href="chat.html">Chat</a>
       <a class="btn-quiet" href="minigames.html">Minigames</a>
       <a class="btn-quiet" href="announcements.html">Announcements</a>
@@ -23,29 +23,28 @@
     </div>
   </header>
 
-  <main class="game">
-    <section class="game__panel" aria-label="Ping Pong">
-      <div class="game__inner">
+  <main class="hub">
+    <section class="card hub__card" aria-label="Community games list">
+      <div class="card__inner">
         <div class="game__hud">
           <div>
-            <div class="game__title">You vs Bot</div>
-            <div class="game__meta">
-              Move: <span class="kbd">Mouse</span> or <span class="kbd">↑</span><span class="kbd">↓</span>
-            </div>
+            <div class="game__title">Browse</div>
+            <div class="game__meta">Search by name, description, or owner.</div>
           </div>
           <div class="game__controls">
-            <span id="ppScore" class="game__meta">0 - 0</span>
-            <button id="ppStart" class="btn-quiet btn-quiet--sm" type="button">Serve</button>
-            <button id="ppReset" class="btn-quiet btn-quiet--sm" type="button">Reset</button>
+            <input id="search" type="search" placeholder="Search..." maxlength="60" />
+            <a class="btn-quiet btn-quiet--sm" href="publish.html">Publish</a>
           </div>
         </div>
 
-        <canvas id="ppCanvas" class="game-canvas" width="940" height="520" aria-label="Ping pong canvas"></canvas>
-        <div id="ppStatus" class="game__meta"></div>
+        <div id="empty" class="game__meta" hidden>No published games yet.</div>
+        <ol id="list" class="game-list" aria-live="polite"></ol>
+        <p id="status"></p>
       </div>
     </section>
   </main>
 
-  <script type="module" src="pingpong.js"></script>
+  <script type="module" src="community.js"></script>
 </body>
 </html>
+

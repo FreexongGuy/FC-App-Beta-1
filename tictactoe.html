@@ -18,7 +18,7 @@
       <a class="btn-quiet" href="minigames.html">Minigames</a>
       <a class="btn-quiet" href="announcements.html">Announcements</a>
       <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
-      <span class="topbar__label">Profile</span>
+      <a class="btn-quiet" href="profile.html">Profile</a>
       <button id="signout" class="btn-quiet" type="button">Sign out</button>
     </div>
   </header>
@@ -32,6 +32,14 @@
             <div id="tttStatus" class="game__meta">X goes first. Click a square.</div>
           </div>
           <div class="game__controls">
+            <label class="inline-field">
+              <span class="inline-field__label">Difficulty</span>
+              <select id="tttDifficulty" class="select">
+                <option value="easy">Easy</option>
+                <option value="medium" selected>Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </label>
             <button id="tttReset" class="btn-quiet btn-quiet--sm" type="button">Reset</button>
           </div>
         </div>
@@ -44,4 +52,3 @@
   <script type="module" src="tictactoe.js"></script>
 </body>
 </html>
-

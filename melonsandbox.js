@@ -51,6 +51,7 @@ let last = performance.now();
 let nextBodyId = 1;
 const bodies = [];
 const constraints = [];
+const explosions = []; // visual effects
 
 function makeBody(b) {
   const mass = b.isStatic ? Infinity : b.mass ?? 1;
@@ -71,6 +72,7 @@ function makeBody(b) {
     friction: b.friction ?? 0.015,
     color: b.color ?? "rgba(255,255,255,0.85)",
     tag: b.tag ?? "",
+    role: b.role ?? "",
   };
 }
 
@@ -108,38 +110,45 @@ function addBox(x, y, isStatic = false) {
 }
 
 function addNpc(x, y) {
-  // Ragdoll made of circles + distance constraints
+  // Blocky ragdoll (Roblox-noob inspired) made of boxes + distance constraints
   const parts = [];
-  const addPart = (dx, dy, r, color) => {
+  const addPart = (dx, dy, w, h, color, role) => {
     const body = makeBody({
-      type: "circle",
+      type: "box",
       x: x + dx,
       y: y + dy,
-      r,
-      mass: (r * r) / 260,
+      w,
+      h,
+      mass: (w * h) / 1400,
       restitution: 0.05,
-      friction: 0.025,
+      friction: 0.028,
       color,
       tag: "npc",
+      role,
     });
     bodies.push(body);
     parts.push(body);
     return body;
   };
 
-  const head = addPart(0, -48, 14, "rgba(255,255,255,0.86)");
-  const chest = addPart(0, -22, 12, "rgba(140,92,255,0.78)");
-  const hip = addPart(0, 6, 12, "rgba(140,92,255,0.78)");
+  const C_HEAD = "rgba(255, 210, 74, 0.95)";
+  const C_TORSO = "rgba(59, 130, 246, 0.92)";
+  const C_LIMB = "rgba(255, 210, 74, 0.9)";
+  const C_LEG = "rgba(34, 197, 94, 0.92)";
 
-  const lArm = addPart(-22, -20, 8, "rgba(255,255,255,0.72)");
-  const lHand = addPart(-38, -12, 7, "rgba(255,255,255,0.72)");
-  const rArm = addPart(22, -20, 8, "rgba(255,255,255,0.72)");
-  const rHand = addPart(38, -12, 7, "rgba(255,255,255,0.72)");
+  const head = addPart(0, -60, 30, 30, C_HEAD, "head");
+  const chest = addPart(0, -28, 34, 40, C_TORSO, "torso");
+  const hip = addPart(0, 10, 30, 24, C_TORSO, "hip");
 
-  const lLeg = addPart(-12, 30, 9, "rgba(255,255,255,0.7)");
-  const lFoot = addPart(-12, 52, 8, "rgba(255,255,255,0.7)");
-  const rLeg = addPart(12, 30, 9, "rgba(255,255,255,0.7)");
-  const rFoot = addPart(12, 52, 8, "rgba(255,255,255,0.7)");
+  const lArm = addPart(-30, -24, 14, 34, C_LIMB, "larm");
+  const rArm = addPart(30, -24, 14, 34, C_LIMB, "rarm");
+  const lHand = addPart(-38, -4, 16, 16, C_LIMB, "lhand");
+  const rHand = addPart(38, -4, 16, 16, C_LIMB, "rhand");
+
+  const lLeg = addPart(-12, 46, 14, 34, C_LEG, "lleg");
+  const rLeg = addPart(12, 46, 14, 34, C_LEG, "rleg");
+  const lFoot = addPart(-12, 68, 18, 12, C_LEG, "lfoot");
+  const rFoot = addPart(12, 68, 18, 12, C_LEG, "rfoot");
 
   const link = (a, b, stiffness = 0.9) => {
     const dx = b.x - a.x;
@@ -147,16 +156,16 @@ function addNpc(x, y) {
     constraints.push({ aId: a.id, bId: b.id, len: Math.hypot(dx, dy), stiffness });
   };
 
-  link(head, chest, 0.65);
+  link(head, chest, 0.6);
   link(chest, hip, 0.85);
-  link(chest, lArm, 0.75);
-  link(lArm, lHand, 0.65);
-  link(chest, rArm, 0.75);
-  link(rArm, rHand, 0.65);
-  link(hip, lLeg, 0.8);
-  link(lLeg, lFoot, 0.75);
-  link(hip, rLeg, 0.8);
-  link(rLeg, rFoot, 0.75);
+  link(chest, lArm, 0.7);
+  link(lArm, lHand, 0.6);
+  link(chest, rArm, 0.7);
+  link(rArm, rHand, 0.6);
+  link(hip, lLeg, 0.75);
+  link(lLeg, lFoot, 0.7);
+  link(hip, rLeg, 0.75);
+  link(rLeg, rFoot, 0.7);
 
   // brace for stability
   link(lArm, rArm, 0.15);
@@ -166,6 +175,49 @@ function addNpc(x, y) {
   for (const p of parts) {
     p.vx += rand(-25, 25);
     p.vy += rand(-25, 25);
+  }
+}
+
+function addExplosionEffect(x, y) {
+  const particles = [];
+  const count = 26;
+  for (let i = 0; i < count; i++) {
+    const a = rand(0, Math.PI * 2);
+    const sp = rand(180, 720);
+    particles.push({
+      x,
+      y,
+      vx: Math.cos(a) * sp,
+      vy: Math.sin(a) * sp,
+      life: rand(0.25, 0.6),
+      age: 0,
+      r: rand(2, 5),
+      hue: rand(10, 65),
+    });
+  }
+  explosions.push({
+    x,
+    y,
+    age: 0,
+    life: 0.55,
+    ringMax: 220,
+    particles,
+  });
+}
+
+function updateExplosions(dt) {
+  for (let i = explosions.length - 1; i >= 0; i--) {
+    const e = explosions[i];
+    e.age += dt;
+    for (const p of e.particles) {
+      p.age += dt;
+      if (p.age > p.life) continue;
+      p.vx *= 0.96;
+      p.vy = p.vy * 0.96 + 380 * dt;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+    }
+    if (e.age > e.life) explosions.splice(i, 1);
   }
 }
 
@@ -489,6 +541,51 @@ function step(dt) {
   }
 }
 
+function roundRect(ctx, x, y, w, h, r) {
+  const rr = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+  ctx.beginPath();
+  ctx.moveTo(x + rr, y);
+  ctx.arcTo(x + w, y, x + w, y + h, rr);
+  ctx.arcTo(x + w, y + h, x, y + h, rr);
+  ctx.arcTo(x, y + h, x, y, rr);
+  ctx.arcTo(x, y, x + w, y, rr);
+  ctx.closePath();
+}
+
+function drawNpcBox(b) {
+  const x = b.x - b.w / 2;
+  const y = b.y - b.h / 2;
+  const r = Math.min(10, Math.min(b.w, b.h) / 3);
+
+  // body fill
+  ctx.fillStyle = b.color;
+  roundRect(ctx, x, y, b.w, b.h, r);
+  ctx.fill();
+
+  // outline
+  ctx.strokeStyle = "rgba(0,0,0,0.18)";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // head face
+  if (b.role === "head") {
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    ctx.fillStyle = "rgba(0,0,0,0.55)";
+    const eyeY = -4;
+    ctx.beginPath();
+    ctx.arc(-6, eyeY, 2.2, 0, Math.PI * 2);
+    ctx.arc(6, eyeY, 2.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(0,0,0,0.55)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(0, 5, 7, 0.15 * Math.PI, 0.85 * Math.PI);
+    ctx.stroke();
+    ctx.restore();
+  }
+}
+
 function draw() {
   ctx.clearRect(0, 0, W, H);
 
@@ -517,12 +614,51 @@ function draw() {
   // bodies
   for (const b of bodies) {
     ctx.fillStyle = b.color;
+    if (b.tag === "npc" && b.type === "box") {
+      drawNpcBox(b);
+      continue;
+    }
     if (b.type === "circle") {
       ctx.beginPath();
       ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
       ctx.fill();
     } else {
       ctx.fillRect(b.x - b.w / 2, b.y - b.h / 2, b.w, b.h);
+    }
+  }
+
+  // explosions (overlay)
+  for (const e of explosions) {
+    const t = clamp(e.age / e.life, 0, 1);
+    const ring = e.ringMax * (0.12 + 0.88 * t);
+    const alpha = (1 - t) * 0.9;
+
+    // glow
+    const grad = ctx.createRadialGradient(e.x, e.y, 0, e.x, e.y, ring);
+    grad.addColorStop(0, `rgba(255, 210, 74, ${0.18 * alpha})`);
+    grad.addColorStop(0.45, `rgba(255, 91, 110, ${0.10 * alpha})`);
+    grad.addColorStop(1, `rgba(0, 0, 0, 0)`);
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(e.x, e.y, ring, 0, Math.PI * 2);
+    ctx.fill();
+
+    // shockwave ring
+    ctx.strokeStyle = `rgba(255,255,255,${0.25 * alpha})`;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(e.x, e.y, ring, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // particles
+    for (const p of e.particles) {
+      if (p.age > p.life) continue;
+      const pt = clamp(p.age / p.life, 0, 1);
+      const pa = (1 - pt) * 0.85;
+      ctx.fillStyle = `hsla(${p.hue}, 95%, 60%, ${pa})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * (1 - pt * 0.35), 0, Math.PI * 2);
+      ctx.fill();
     }
   }
 }
@@ -535,6 +671,7 @@ function loop(now) {
   const sub = dt / 2;
   step(sub);
   step(sub);
+  updateExplosions(dt);
   draw();
 }
 
@@ -567,6 +704,7 @@ function toWorld(ev) {
 }
 
 function explodeAt(x, y) {
+  addExplosionEffect(x, y);
   for (const b of bodies) {
     if (b.invMass === 0) continue;
     const dx = b.x - x;

@@ -237,8 +237,19 @@ saveEl.addEventListener("click", () => {
   const name = (prompt("Name your drawing:", `Drawing ${new Date().toLocaleString()}`) || "").trim();
   if (!name) return;
 
+  const exportCanvas = document.createElement("canvas");
+  exportCanvas.width = inkCanvas.width;
+  exportCanvas.height = inkCanvas.height;
+  const exportCtx = exportCanvas.getContext("2d");
+  exportCtx.save();
+  exportCtx.setTransform(1, 0, 0, 1, 0, 0);
+  exportCtx.fillStyle = bgColor;
+  exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+  exportCtx.restore();
+  exportCtx.drawImage(inkCanvas, 0, 0);
+  const dataUrl = exportCanvas.toDataURL("image/png");
+
   const drawings = loadLibrary();
-  // Basic storage guard: localStorage is limited; cap count to reduce failures.
   if (drawings.length >= 30) {
     setStatus("Library is full (30). Rename/view only in library.");
     return;
@@ -250,19 +261,7 @@ saveEl.addEventListener("click", () => {
     createdAt: nowIso(),
     updatedAt: nowIso(),
     bgColor,
-    dataUrl: (() => {
-      const exportCanvas = document.createElement("canvas");
-      exportCanvas.width = inkCanvas.width;
-      exportCanvas.height = inkCanvas.height;
-      const exportCtx = exportCanvas.getContext("2d");
-      exportCtx.save();
-      exportCtx.setTransform(1, 0, 0, 1, 0, 0);
-      exportCtx.fillStyle = bgColor;
-      exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
-      exportCtx.restore();
-      exportCtx.drawImage(inkCanvas, 0, 0);
-      return exportCanvas.toDataURL("image/png");
-    })(),
+    dataUrl,
     w: dprInfo.cssW || 940,
     h: dprInfo.cssH || 560,
   };

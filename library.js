@@ -62,11 +62,11 @@ window.addEventListener("keydown", (e) => {
 });
 
 function render() {
-  const drawings = loadLibrary();
+  const list = loadLibrary();
   gridEl.innerHTML = "";
-  emptyEl.hidden = drawings.length !== 0;
+  emptyEl.hidden = list.length !== 0;
 
-  for (const d of drawings) {
+  for (const d of list) {
     const card = document.createElement("div");
     card.className = "library-card";
     card.innerHTML = `
@@ -84,20 +84,20 @@ function render() {
     `;
 
     const img = card.querySelector(".library-card__img");
-    img.src = d.dataUrl;
+    img.src = d.dataUrl || "";
 
     card.querySelectorAll("[data-act='view'], .library-card__thumb").forEach((el) => {
-      el.addEventListener("click", () => openModal(d.name, d.dataUrl));
+      el.addEventListener("click", () => openModal(d.name, d.dataUrl || ""));
     });
 
     card.querySelector("[data-act='rename']").addEventListener("click", () => {
       const next = (prompt("Rename drawing:", d.name) || "").trim();
       if (!next) return;
-      const nextDrawings = loadLibrary();
-      const idx = nextDrawings.findIndex((x) => x.id === d.id);
+      const drawings = loadLibrary();
+      const idx = drawings.findIndex((x) => x.id === d.id);
       if (idx < 0) return;
-      nextDrawings[idx] = { ...nextDrawings[idx], name: next, updatedAt: new Date().toISOString() };
-      saveLibrary(nextDrawings);
+      drawings[idx] = { ...drawings[idx], name: next, updatedAt: new Date().toISOString() };
+      saveLibrary(drawings);
       render();
     });
 
@@ -106,4 +106,3 @@ function render() {
 }
 
 render();
-

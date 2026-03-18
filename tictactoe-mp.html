@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Tic Tac Toe Online</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Tic Tac Toe (Online)</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="multiplayer.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="profile.html">Profile</a>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="game">
+    <section class="game__panel" aria-label="Multiplayer Tic Tac Toe">
+      <div class="game__inner">
+        <div class="game__hud">
+          <div>
+            <div class="game__title">Room</div>
+            <div id="status" class="game__meta">Create a room or join one.</div>
+          </div>
+          <div class="game__controls">
+            <input id="roomCode" type="text" maxlength="12" placeholder="Room code">
+            <button id="createBtn" class="btn-quiet btn-quiet--sm" type="button">Create</button>
+            <button id="joinBtn" class="btn-quiet btn-quiet--sm" type="button">Join</button>
+            <button id="resetBtn" class="btn-quiet btn-quiet--sm" type="button" disabled>Reset</button>
+          </div>
+        </div>
+
+        <canvas id="c" class="game-canvas" width="420" height="420" aria-label="Tic Tac Toe board"></canvas>
+        <p id="meta" class="game__meta"></p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="tictactoe-mp.js"></script>
+</body>
+</html>
+
