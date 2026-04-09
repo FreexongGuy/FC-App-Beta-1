@@ -1,0 +1,5 @@
+-- this file is for a command for git to use when i would like to update.
+
+git add .
+git commit -m "update"
+git push

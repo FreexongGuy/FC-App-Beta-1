@@ -364,6 +364,112 @@ input:focus-visible {
   padding: 0 2px;
 }
 
+/* --- AI Chat (minimal, chatbox-focused) */
+.aichat {
+  width: min(980px, 100%);
+  margin: 14px auto 0;
+  display: grid;
+  gap: 12px;
+}
+
+.aichat__panel {
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.aichat__messages {
+  list-style: none;
+  margin: 0;
+  padding: 14px 14px;
+  height: clamp(340px, 62vh, 720px);
+  overflow: auto;
+  display: grid;
+  gap: 12px;
+}
+
+.aichat__row {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+.aichat__row--me {
+  justify-items: end;
+}
+
+.aichat__meta {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.aichat__bubble {
+  max-width: min(720px, 100%);
+  padding: 12px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(7, 17, 31, 0.55);
+  color: rgba(255, 255, 255, 0.92);
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.aichat__bubble--me {
+  background: rgba(59, 230, 193, 0.12);
+  border-color: rgba(59, 230, 193, 0.22);
+}
+
+.aichat__composer {
+  display: grid;
+  grid-template-columns: 1fr 140px;
+  gap: 10px;
+  align-items: center;
+}
+
+.aichat__composer input[type="text"] {
+  height: 46px;
+}
+
+.aichat__composer button {
+  height: 46px;
+}
+
+.aichat__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+
+/* --- Loading bar (WebLLM /botlocal) */
+.loadbar {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+.loadbar__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(59, 230, 193, 0.85), rgba(140, 92, 255, 0.85));
+  transition: width 120ms ease;
+}
+
+.loadbar__meta {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: pre-wrap;
+}
+
 .msg-row {
   display: flex;
   align-items: flex-end;

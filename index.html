@@ -124,7 +124,43 @@ form?.addEventListener('submit', async (e) => {
     }
     window.location.href = 'chat.html';
   } catch (error) {
-    setStatus("Error: " + (error?.message || String(error)), "error");
+    const msg = error?.message || String(error);
+    const isPerm =
+      /permission\s*denied/i.test(msg) ||
+      /PERMISSION_DENIED/i.test(msg) ||
+      /insufficient\s*permissions/i.test(msg);
+
+    if (isPerm) {
+      // Offline/local fallback: store accounts locally when RTDB rules block access.
+      // This is NOT secure and is only meant to keep local/dev usage working.
+      let localUsers = {};
+      try {
+        localUsers = JSON.parse(safeGetItem("fcapp_local_users") || "{}") || {};
+      } catch {
+        localUsers = {};
+      }
+
+      if (localUsers[username]) {
+        if (localUsers[username] !== password) {
+          setStatus("Incorrect password (local/offline mode).", "error");
+          return;
+        }
+      } else {
+        localUsers[username] = password;
+        safeSetItem("fcapp_local_users", JSON.stringify(localUsers));
+      }
+
+      if (!safeSetItem('fcapp_user', username)) {
+        setStatus("Login failed: browser storage is blocked (enable cookies/site data).", "error");
+        return;
+      }
+
+      setStatus("Logged in (offline mode). Firebase rules blocked account sync.", "error");
+      window.location.href = 'chat.html';
+      return;
+    }
+
+    setStatus("Error: " + msg, "error");
   } finally {
     if (btn) btn.disabled = false;
   }
