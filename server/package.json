@@ -1,0 +1,11 @@
+{
+  "name": "fc-app-server",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "node index.js"
+  }
+}
