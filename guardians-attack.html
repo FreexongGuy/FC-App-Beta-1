@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Guardians Attack!</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Guardians Attack!</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="multiplayer.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="profile.html">Profile</a>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="game">
+    <section class="game__panel" aria-label="Guardians Attack multiplayer">
+      <div class="game__inner">
+        <div class="game__hud">
+          <div>
+            <div class="game__title">Room</div>
+            <div id="status" class="game__meta">Create a room or join one.</div>
+          </div>
+          <div class="game__controls">
+            <input id="roomCode" type="text" maxlength="12" placeholder="Room code">
+            <button id="createBtn" class="btn-quiet btn-quiet--sm" type="button">Create</button>
+            <button id="joinBtn" class="btn-quiet btn-quiet--sm" type="button">Join</button>
+            <button id="resetBtn" class="btn-quiet btn-quiet--sm" type="button" disabled>Reset</button>
+            <button id="spawnBtn" class="btn-quiet btn-quiet--sm" type="button" disabled>Spawn Guard</button>
+          </div>
+        </div>
+
+        <canvas id="c" class="game-canvas" width="920" height="300" aria-label="Guardians Attack arena"></canvas>
+        <p id="meta" class="game__meta"></p>
+        <p class="game__meta">How to play: Each player starts with 50 guards. Spawn guards onto the platform. Guards auto-fight. Each kill gives the killer +1 guard in inventory. If your opponent has 0 guards left (inventory + on platform), you win.</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="guardians-attack.js"></script>
+</body>
+</html>
+

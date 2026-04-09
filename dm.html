@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Direct Message</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 id="dm-title" class="topbar__title">DM</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="contacts.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="contacts.html">Contacts</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <a class="btn-quiet" href="profile.html">Profile</a>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="chat">
+    <section class="chat__panel" aria-label="Direct messages">
+      <ol id="messages" class="chat__messages" aria-live="polite"></ol>
+    </section>
+
+    <form id="composer" class="chat__composer" autocomplete="off">
+      <input
+        id="message"
+        type="text"
+        inputmode="text"
+        placeholder="Write a message..."
+        maxlength="500"
+        required
+      >
+      <button id="send" type="submit">Send</button>
+    </form>
+
+    <p id="status"></p>
+  </main>
+
+  <script type="module" src="dm.js"></script>
+</body>
+</html>
+

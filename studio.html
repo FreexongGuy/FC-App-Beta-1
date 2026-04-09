@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Game Studio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Game Studio</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="minigames.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <a class="btn-quiet" href="profile.html">Profile</a>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="hub">
+    <section class="card hub__card" aria-label="Choose engine">
+      <div class="card__inner">
+        <h2>Choose your engine</h2>
+        <p class="hub__hint">Is your game 2D or 3D?</p>
+
+        <div class="hub__grid">
+          <a class="hub-tile" href="studio2d.html">
+            <div class="hub-tile__title">2D Studio</div>
+            <div class="hub-tile__desc">Build a 2D game with objects and behaviors.</div>
+          </a>
+          <a class="hub-tile" href="studio3d.html">
+            <div class="hub-tile__title">3D Studio</div>
+            <div class="hub-tile__desc">Build a 3D world with blocks and lights.</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    const user = (localStorage.getItem("fcapp_user") || "").trim();
+    if (!user) window.location.href = "index.html";
+    document.getElementById("signout")?.addEventListener("click", () => {
+      localStorage.removeItem("fcapp_user");
+      localStorage.removeItem("fcapp_dev");
+      localStorage.removeItem("fcapp_dev_at");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
+

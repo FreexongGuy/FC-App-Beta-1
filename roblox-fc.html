@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Roblox: FC EDITION</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+      }
+    }
+  </script>
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 id="title" class="topbar__title">Roblox: FC EDITION</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="minigames.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="community.html">Community</a>
+      <a class="btn-quiet" href="profile.html">Profile</a>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="robloxfc">
+    <section class="card robloxfc__card" aria-label="Roblox FC">
+      <div class="card__inner">
+        <div class="robloxfc__top">
+          <div class="robloxfc__brand">
+            <div class="robloxfc__logo" aria-hidden="true">FC</div>
+            <div>
+              <div class="robloxfc__name">Roblox: FC EDITION</div>
+              <div class="robloxfc__sub">Discover experiences • Play a 3D hangout • Build in Studio</div>
+            </div>
+          </div>
+
+          <nav class="tabs" aria-label="Roblox FC tabs">
+            <button class="tab is-active" data-tab="discover" type="button">Discover</button>
+            <button class="tab" data-tab="play" type="button">Play</button>
+            <button class="tab" data-tab="studio" type="button">Studio</button>
+          </nav>
+        </div>
+
+        <!-- Discover -->
+        <section id="tab-discover" class="robloxfc__tab" aria-label="Discover experiences">
+          <div class="robloxfc__discover">
+            <div class="robloxfc__left">
+              <div class="robloxfc__search">
+                <input id="search" class="input" type="text" placeholder="Search experiences..." maxlength="60" />
+                <button id="newExperience" class="btn-quiet btn-quiet--sm" type="button">New</button>
+              </div>
+              <ol id="experienceList" class="game-list" aria-label="Experiences list"></ol>
+            </div>
+
+            <div class="robloxfc__right">
+              <div class="robloxfc__panel">
+                <div class="robloxfc__panelTop">
+                  <div>
+                    <div id="expTitle" class="robloxfc__panelTitle">Select an experience</div>
+                    <div id="expDesc" class="robloxfc__panelDesc">Pick a game from the list to see details and assets.</div>
+                  </div>
+                  <div class="robloxfc__panelActions">
+                    <button id="playExperience" class="btn-quiet btn-quiet--sm" type="button" disabled>Play</button>
+                    <button id="openExplorer" class="btn-quiet btn-quiet--sm" type="button" disabled>Explorer</button>
+                  </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="kv">
+                  <div class="kv-row">
+                    <div class="kv-key">Created</div>
+                    <div id="expCreated" class="kv-val">—</div>
+                  </div>
+                  <div class="kv-row">
+                    <div class="kv-key">Developer</div>
+                    <div id="expDev" class="kv-val">—</div>
+                  </div>
+                  <div class="kv-row">
+                    <div class="kv-key">Visits</div>
+                    <div id="expVisits" class="kv-val">—</div>
+                  </div>
+                  <div class="kv-row">
+                    <div class="kv-key">Live</div>
+                    <div id="expLive" class="kv-val">—</div>
+                  </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <h2 class="studio-section-title">Game Explorer</h2>
+                <p class="small-note">Assets are listed by type (TextPart / ImagePart / Script / Model / Sound).</p>
+                <div class="robloxfc__explorer">
+                  <ol id="assetList" class="robloxfc__assetList" aria-label="Assets list"></ol>
+                  <div class="robloxfc__assetDetails" aria-label="Asset details">
+                    <div id="assetTitle" class="robloxfc__assetTitle">Select an asset</div>
+                    <pre id="assetBody" class="robloxfc__assetBody"></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Play -->
+        <section id="tab-play" class="robloxfc__tab" hidden aria-label="Play">
+          <div class="robloxfc__play">
+            <div class="robloxfc__panel">
+              <h2 class="studio-section-title">3D Multiplayer Hangout (Beta)</h2>
+              <p class="small-note">Join a room and move around. Mobile controls are supported.</p>
+
+              <div class="robloxfc__room">
+                <input id="roomCode" class="input" type="text" placeholder="Room code (e.g. FC123)" maxlength="12" />
+                <button id="createRoom" class="btn-quiet btn-quiet--sm" type="button">Create</button>
+                <button id="joinRoom" class="btn-quiet btn-quiet--sm" type="button">Join</button>
+                <button id="leaveRoom" class="btn-quiet btn-quiet--sm btn-quiet--danger" type="button" disabled>Leave</button>
+                <span id="roomStatus" class="badge" aria-live="polite"></span>
+              </div>
+
+              <div class="robloxfc__viewportWrap">
+                <canvas id="playCanvas" class="robloxfc__viewport" width="960" height="640"></canvas>
+                <div id="touchUi" class="touch-ui" aria-hidden="true">
+                  <div class="touch-ui__left">
+                    <div id="stick" class="stick" role="application" aria-label="Move joystick">
+                      <div id="stickKnob" class="stick__knob"></div>
+                    </div>
+                  </div>
+                  <div class="touch-ui__right">
+                    <button id="jumpBtn" class="touch-ui__btn" type="button">Jump</button>
+                  </div>
+                </div>
+              </div>
+
+              <p class="small-note">Controls: WASD / arrows to move, Space to jump, mouse/touch-drag to rotate camera.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Studio -->
+        <section id="tab-studio" class="robloxfc__tab" hidden aria-label="Studio">
+          <div class="robloxfc__studio">
+            <div class="robloxfc__panel">
+              <div class="studio-toolbar">
+                <span class="badge">Studio</span>
+                <button id="studioSelect" class="btn-quiet btn-quiet--sm" type="button">Select</button>
+                <button id="studioPart" class="btn-quiet btn-quiet--sm" type="button">Part</button>
+                <button id="studioSphere" class="btn-quiet btn-quiet--sm" type="button">Sphere</button>
+                <button id="studioText" class="btn-quiet btn-quiet--sm" type="button">TextPart</button>
+                <button id="studioImage" class="btn-quiet btn-quiet--sm" type="button">ImagePart</button>
+                <button id="studioLight" class="btn-quiet btn-quiet--sm" type="button">Light</button>
+                <button id="studioDelete" class="btn-quiet btn-quiet--sm btn-quiet--danger" type="button">Delete</button>
+                <button id="studioPlay" class="btn-quiet btn-quiet--sm" type="button">Play</button>
+                <button id="studioSave" class="btn-quiet btn-quiet--sm" type="button">Save</button>
+              </div>
+
+              <div class="robloxfc__studioLayout">
+                <section class="robloxfc__studioExplorer" aria-label="Explorer">
+                  <h2 class="studio-section-title">Explorer</h2>
+                  <ol id="studioExplorer" class="robloxfc__tree"></ol>
+                  <div class="divider"></div>
+                  <h2 class="studio-section-title">Game</h2>
+                  <div class="kv">
+                    <div class="kv-row">
+                      <div class="kv-key">Title</div>
+                      <input id="studioGameTitle" type="text" maxlength="40" placeholder="My Roblox FC game">
+                    </div>
+                    <div class="kv-row">
+                      <div class="kv-key">Desc</div>
+                      <input id="studioGameDesc" type="text" maxlength="200" placeholder="Short description">
+                    </div>
+                  </div>
+                </section>
+
+                <section class="robloxfc__studioViewport" aria-label="Viewport">
+                  <canvas id="studioCanvas" class="robloxfc__viewport" width="960" height="640"></canvas>
+                </section>
+
+                <section class="robloxfc__studioProps" aria-label="Properties">
+                  <h2 class="studio-section-title">Properties</h2>
+                  <div id="studioNoSel" class="game__meta">No selection.</div>
+                  <div id="studioProps" class="kv" hidden>
+                    <div class="kv-row">
+                      <div class="kv-key">Name</div>
+                      <input id="propName" type="text" maxlength="40">
+                    </div>
+                    <div class="kv-row">
+                      <div class="kv-key">Type</div>
+                      <input id="propType" type="text" disabled>
+                    </div>
+                    <div class="kv-row">
+                      <div class="kv-key">X</div>
+                      <input id="propX" type="text" maxlength="10">
+                    </div>
+                    <div class="kv-row">
+                      <div class="kv-key">Y</div>
+                      <input id="propY" type="text" maxlength="10">
+                    </div>
+                    <div class="kv-row">
+                      <div class="kv-key">Z</div>
+                      <input id="propZ" type="text" maxlength="10">
+                    </div>
+                    <div class="kv-row">
+                      <div class="kv-key">Size</div>
+                      <input id="propS" type="text" maxlength="10">
+                    </div>
+                    <div class="kv-row">
+                      <div class="kv-key">Color</div>
+                      <input id="propColor" type="text" maxlength="16" placeholder="#ffffff">
+                    </div>
+                    <div class="kv-row">
+                      <div class="kv-key">Text</div>
+                      <input id="propText" type="text" maxlength="80" placeholder="Hello">
+                    </div>
+                    <div class="kv-row">
+                      <div class="kv-key">Image URL</div>
+                      <input id="propImage" type="text" maxlength="240" placeholder="https://...">
+                    </div>
+                  </div>
+
+                  <div class="divider"></div>
+                  <h2 class="studio-section-title">Script (optional)</h2>
+                  <p class="small-note">Coding mode: attach JavaScript to the selected object. It runs every frame in Play.</p>
+                  <textarea id="scriptEditor" class="input code-editor" placeholder="// Example:\n// api.spin(self, dt)\n"></textarea>
+                  <div class="robloxfc__scriptBtns">
+                    <button id="scriptTemplate" class="btn-quiet btn-quiet--sm" type="button">Insert template</button>
+                    <button id="scriptClear" class="btn-quiet btn-quiet--sm btn-quiet--danger" type="button">Clear</button>
+                  </div>
+                  <p id="studioStatus" class="small-note"></p>
+                </section>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="roblox-fc.js"></script>
+</body>
+</html>
+

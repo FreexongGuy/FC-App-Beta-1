@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - 3D Model Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 id="title" class="topbar__title">3D Model Studio</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="minigames.html">Back</a>
+      <a class="btn-quiet" href="studio3d.html">3D Studio</a>
+      <a class="btn-quiet" href="community.html">Community</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="profile.html">Profile</a>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="studio">
+    <section class="studio-panel" aria-label="Toolbar">
+      <div class="studio-toolbar">
+        <span class="badge">Tool: <span id="toolLabel">Select</span></span>
+        <button id="toolSelect" class="btn-quiet btn-quiet--sm" type="button">Select</button>
+        <button id="toolCube" class="btn-quiet btn-quiet--sm" type="button">Add Cube</button>
+        <button id="toolSphere" class="btn-quiet btn-quiet--sm" type="button">Add Sphere</button>
+        <button id="dupBtn" class="btn-quiet btn-quiet--sm" type="button">Duplicate</button>
+        <button id="delBtn" class="btn-quiet btn-quiet--sm btn-quiet--danger" type="button">Delete</button>
+        <button id="saveLocal" class="btn-quiet btn-quiet--sm" type="button">Save</button>
+        <button id="publishBtn" class="btn-quiet btn-quiet--sm" type="button">Publish model</button>
+      </div>
+      <p class="small-note">Click to place parts on the ground. Use inspector for move/rotate/scale.</p>
+    </section>
+
+    <div class="studio-layout">
+      <section class="studio-canvas-wrap" aria-label="3D viewport">
+        <canvas id="c" class="studio-canvas" width="960" height="640"></canvas>
+      </section>
+
+      <section class="studio-panel" aria-label="Inspector">
+        <h2 class="studio-section-title">Model</h2>
+        <div class="kv">
+          <div class="kv-row">
+            <div class="kv-key">Name</div>
+            <input id="modelName" type="text" maxlength="40" placeholder="My model">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Desc</div>
+            <input id="modelDesc" type="text" maxlength="200" placeholder="Short description">
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 class="studio-section-title">Selected part</h2>
+        <div id="noSelection" class="game__meta">No part selected.</div>
+        <div id="inspector" class="kv" hidden>
+          <div class="kv-row">
+            <div class="kv-key">Type</div>
+            <input id="partType" type="text" disabled>
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Pos X</div>
+            <input id="px" type="text" maxlength="10">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Pos Y</div>
+            <input id="py" type="text" maxlength="10">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Pos Z</div>
+            <input id="pz" type="text" maxlength="10">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Rot X°</div>
+            <input id="rx" type="text" maxlength="10">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Rot Y°</div>
+            <input id="ry" type="text" maxlength="10">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Rot Z°</div>
+            <input id="rz" type="text" maxlength="10">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Scale</div>
+            <input id="s" type="text" maxlength="10" placeholder="1">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Color</div>
+            <input id="color" type="text" maxlength="16" placeholder="#ffffff">
+          </div>
+        </div>
+
+        <p class="small-note">Tip: publish once, then use it from 3D Studio → Tool “Model”.</p>
+        <p id="status"></p>
+      </section>
+    </div>
+  </main>
+
+  <script type="module" src="modelstudio.js"></script>
+</body>
+</html>
+

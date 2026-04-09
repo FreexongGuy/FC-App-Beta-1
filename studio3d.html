@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - 3D Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 id="title" class="topbar__title">3D Studio</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="studio.html">Back</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="community.html">Community</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="profile.html">Profile</a>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="studio">
+    <section class="studio-panel" aria-label="Toolbar">
+      <div class="studio-toolbar">
+        <span class="badge">Tool: <span id="toolLabel">Select</span></span>
+        <button id="toolSelect" class="btn-quiet btn-quiet--sm" type="button">Select</button>
+        <button id="toolCube" class="btn-quiet btn-quiet--sm" type="button">Cube</button>
+        <button id="toolSphere" class="btn-quiet btn-quiet--sm" type="button">Sphere</button>
+        <button id="toolLight" class="btn-quiet btn-quiet--sm" type="button">Light</button>
+        <button id="toolModel" class="btn-quiet btn-quiet--sm" type="button">Model</button>
+        <select id="modelPick" class="select" aria-label="Choose model"></select>
+        <a class="btn-quiet btn-quiet--sm" href="modelstudio.html">Create models</a>
+        <button id="delObj" class="btn-quiet btn-quiet--sm btn-quiet--danger" type="button">Delete</button>
+        <button id="publishBtn" class="btn-quiet btn-quiet--sm" type="button">Publish</button>
+      </div>
+      <p class="small-note">Click to place objects. Drag to orbit. Wheel zoom.</p>
+    </section>
+
+    <div class="studio-layout">
+      <section class="studio-canvas-wrap" aria-label="3D viewport">
+        <canvas id="c" class="studio-canvas" width="960" height="640"></canvas>
+      </section>
+
+      <section class="studio-panel" aria-label="Inspector">
+        <h2 class="studio-section-title">Game</h2>
+        <div class="kv">
+          <div class="kv-row">
+            <div class="kv-key">Name</div>
+            <input id="gameName" type="text" maxlength="40" placeholder="My 3D game">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Desc</div>
+            <input id="gameDesc" type="text" maxlength="200" placeholder="Short description">
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 class="studio-section-title">Selected</h2>
+        <div id="noSelection" class="game__meta">No object selected.</div>
+        <div id="inspector" class="kv" hidden>
+          <div class="kv-row">
+            <div class="kv-key">Type</div>
+            <input id="objType" type="text" disabled>
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">X</div>
+            <input id="objX" type="text" maxlength="10">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Y</div>
+            <input id="objY" type="text" maxlength="10">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Z</div>
+            <input id="objZ" type="text" maxlength="10">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Rot Y°</div>
+            <input id="objRY" type="text" maxlength="10" placeholder="0">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Size</div>
+            <input id="objS" type="text" maxlength="10" placeholder="1">
+          </div>
+          <div class="kv-row">
+            <div class="kv-key">Color</div>
+            <input id="objColor" type="text" maxlength="16" placeholder="#ffffff">
+          </div>
+        </div>
+
+        <p class="small-note">MVP: object transform via inspector (drag gizmos coming later).</p>
+        <p id="status"></p>
+      </section>
+    </div>
+  </main>
+
+  <script type="module" src="studio3d.js"></script>
+</body>
+</html>

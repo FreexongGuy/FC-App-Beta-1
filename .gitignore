@@ -1,0 +1,14 @@
+# Secrets / local files
+api.txt
+.env
+.env.*
+
+# Firebase Functions local env
+functions/.env
+functions/.env.*
+
+# OS / tooling
+.DS_Store
+node_modules
+functions/node_modules
+

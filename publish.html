@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FC App - Publish a Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+  <header class="topbar" role="banner">
+    <div class="topbar__left">
+      <h1 class="topbar__title">Publish a Game</h1>
+    </div>
+    <div class="topbar__right">
+      <a class="btn-quiet" href="minigames.html">Back</a>
+      <a class="btn-quiet" href="chat.html">Chat</a>
+      <a class="btn-quiet" href="minigames.html">Minigames</a>
+      <a class="btn-quiet" href="announcements.html">Announcements</a>
+      <a class="btn-quiet" href="developerverification.html">Developer Panel</a>
+      <a class="btn-quiet" href="profile.html">Profile</a>
+      <button id="signout" class="btn-quiet" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="hub">
+    <section class="card hub__card" aria-label="Publish game form">
+      <div class="card__inner">
+        <form id="publishForm" autocomplete="off">
+          <h2>Game info</h2>
+          <label for="gameName">Name</label>
+          <input id="gameName" type="text" maxlength="40" required placeholder="My awesome game">
+
+          <label for="gameDesc">Description</label>
+          <textarea id="gameDesc" rows="3" maxlength="200" placeholder="What is your game about?"></textarea>
+
+          <h2>Game code (HTML)</h2>
+          <p class="hub__hint">Tip: You can paste HTML/JS here. It runs in a sandboxed iframe.</p>
+          <textarea id="gameHtml" class="code-editor" spellcheck="false" placeholder="&lt;canvas id=&quot;c&quot; width=&quot;480&quot; height=&quot;320&quot;&gt;&lt;/canvas&gt;&#10;&lt;script&gt;// your game JS here&lt;/script&gt;"></textarea>
+
+          <div class="divider"></div>
+
+          <h2>Preview</h2>
+          <div class="iframe-wrap">
+            <iframe id="previewFrame" title="Game preview" sandbox="allow-scripts"></iframe>
+          </div>
+
+          <button id="publishBtn" type="submit">Publish</button>
+          <p id="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="publish.js"></script>
+</body>
+</html>
+
